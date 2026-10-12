@@ -27,8 +27,9 @@ export function EventCardCompact({ event }: { event: CareerEvent }) {
       <DateBlock iso={event.date} />
       <div className="min-w-0">
         <h3 className="text-sm font-bold group-hover:text-primary">{event.title}</h3>
-        <p className="mt-0.5 flex items-center gap-1 text-xs text-muted-foreground">
-          <Clock className="h-3 w-3" /> {d.time} · <span className="truncate">{event.location}</span>
+        <p className="mt-0.5 flex min-w-0 items-center gap-1 text-xs text-muted-foreground">
+          <Clock className="h-3 w-3 shrink-0" />
+          <span className="truncate">{d.time} · {event.location}</span>
         </p>
         <p className="mt-1 line-clamp-2 text-xs text-muted-foreground">{event.summary}</p>
       </div>
