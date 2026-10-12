@@ -1,24 +1,134 @@
-import { createFileRoute } from "@tanstack/react-router";
+import { createFileRoute, Link } from "@tanstack/react-router";
+import { ArrowRight } from "lucide-react";
+import { useMemo, useState } from "react";
+import { Button } from "@/components/ui/button";
+import { EmptyState } from "@/components/common/EmptyState";
+import { StatsCards } from "@/components/common/StatsCards";
+import { EventCardCompact } from "@/components/events/EventCard";
+import { FilterChips } from "@/components/jobs/FilterChips";
+import { JobList } from "@/components/jobs/JobCard";
+import { SearchBar } from "@/components/jobs/SearchBar";
+import { emptyFilters, filterJobs, toggleIn } from "@/lib/jobs";
+import { getCompanyName, getEvents, getJobs } from "@/services/api";
+import type { JobFilters } from "@/types";
 
-// No head() here: the home route inherits title/description/og/twitter from
-// __root.tsx, and ships no og:image so serve-time hosting can inject the
-// project's social preview (explicit og:image or latest screenshot).
 export const Route = createFileRoute("/")({
-  component: Index,
+  head: () => ({
+    meta: [
+      { title: "CONECTA UNIS — Encontre sua oportunidade na região" },
+      { name: "description", content: "Vagas de estágio e emprego para estudantes da Unis em São Lourenço, Caxambu e região." },
+      { property: "og:title", content: "CONECTA UNIS — Encontre sua oportunidade na região" },
+      { property: "og:description", content: "Vagas de estágio e emprego para estudantes da Unis em São Lourenço, Caxambu e região." },
+    ],
+  }),
+  component: Home,
 });
 
-// IMPORTANT: Replace this placeholder. See ./README.md for routing conventions.
-function Index() {
+const PAGE = 6;
+
+function Home() {
+  const [f, setF] = useState<JobFilters>(emptyFilters);
+  const [limit, setLimit] = useState(PAGE);
+  const all = getJobs();
+  const results = useMemo(() => filterJobs(all, f, getCompanyName), [all, f]);
+  const shown = results.slice(0, limit);
+
+  const chips = [
+    { id: "estagio", label: "Estágio", active: f.types.includes("estagio") },
+    { id: "emprego", label: "Emprego", active: f.types.includes("emprego") },
+    { id: "meio", label: "Meio período", active: f.schedules.includes("meio-periodo") },
+    { id: "remoto", label: "Remoto", active: f.modes.includes("remoto") },
+  ];
+  const toggle = (id: string) => {
+    setLimit(PAGE);
+    setF((p) =>
+      id === "estagio" || id === "emprego"
+        ? { ...p, types: toggleIn(p.types, id) }
+        : id === "meio"
+          ? { ...p, schedules: toggleIn(p.schedules, "meio-periodo") }
+          : { ...p, modes: toggleIn(p.modes, "remoto") },
+    );
+  };
+
   return (
-    <div
-      className="flex min-h-screen items-center justify-center"
-      style={{ backgroundColor: "#fcfbf8" }}
-    >
-      <img
-        data-lovable-blank-page-placeholder="REMOVE_THIS"
-        src="https://cdn.gpteng.co/blank-app-v1.svg"
-        alt="Your app will live here!"
-      />
-    </div>
+    <>
+      <section className="border-b bg-surface">
+        <div className="container-page py-12 sm:py-16">
+          <div className="max-w-3xl">
+            <p className="text-sm font-semibold uppercase tracking-wider text-brand-purple">Núcleo de Carreira e Empregabilidade</p>
+            <h1 className="mt-3 text-4xl font-extrabold leading-tight sm:text-5xl">
+              Encontre sua oportunidade <span className="text-brand-gradient">na região</span>
+            </h1>
+            <p className="mt-4 text-lg text-muted-foreground">
+              Conectando estudantes da Unis a vagas de estágio e emprego em São Lourenço, Caxambu e região.
+            </p>
+            <div className="mt-8 space-y-4">
+              <SearchBar value={f.query} onChange={(q) => { setLimit(PAGE); setF((p) => ({ ...p, query: q })); }} />
+              <FilterChips chips={chips} onToggle={toggle} />
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <div className="container-page grid gap-8 py-10 lg:grid-cols-[minmax(0,1fr)_320px]">
+        <section aria-labelledby="vagas-title">
+          <div className="mb-5 flex flex-wrap items-end justify-between gap-3">
+            <div>
+              <h2 id="vagas-title" className="text-2xl font-bold">Vagas Disponíveis</h2>
+              <p className="text-sm text-muted-foreground" aria-live="polite">
+                {results.length} {results.length === 1 ? "vaga encontrada" : "vagas encontradas"} de {all.length} cadastradas
+              </p>
+            </div>
+            <label className="flex items-center gap-2 text-sm">
+              <span className="text-muted-foreground">Ordenar:</span>
+              <select
+                value={f.sort}
+                onChange={(e) => setF((p) => ({ ...p, sort: e.target.value as JobFilters["sort"] }))}
+                className="h-9 rounded-md border bg-surface px-2 text-sm focus-visible:outline-2 focus-visible:outline-ring"
+              >
+                <option value="recentes">Mais recentes</option>
+                <option value="antigas">Mais antigas</option>
+              </select>
+            </label>
+          </div>
+          {results.length === 0 ? (
+            <EmptyState
+              title="Nenhuma vaga encontrada"
+              description="Tente outros termos de busca ou remova alguns filtros."
+              action={<Button variant="outline" onClick={() => setF(emptyFilters)}>Limpar filtros</Button>}
+            />
+          ) : (
+            <>
+              <JobList jobs={shown} />
+              <div className="mt-6 flex justify-center">
+                {limit < results.length ? (
+                  <Button variant="outline" size="lg" onClick={() => setLimit((l) => l + PAGE)}>Ver mais vagas</Button>
+                ) : (
+                  <Button asChild variant="outline" size="lg">
+                    <Link to="/vagas">Ver mais vagas <ArrowRight className="h-4 w-4" /></Link>
+                  </Button>
+                )}
+              </div>
+            </>
+          )}
+        </section>
+
+        <aside aria-labelledby="eventos-title">
+          <div className="mb-5 flex items-center justify-between">
+            <h2 id="eventos-title" className="text-xl font-bold">Próximos eventos</h2>
+            <Link to="/eventos" className="text-sm font-semibold text-primary hover:underline">Ver todos</Link>
+          </div>
+          <ul className="space-y-3">
+            {getEvents().map((e) => (
+              <li key={e.id}><EventCardCompact event={e} /></li>
+            ))}
+          </ul>
+        </aside>
+      </div>
+
+      <div className="container-page">
+        <StatsCards />
+      </div>
+    </>
   );
 }
