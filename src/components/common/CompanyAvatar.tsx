@@ -8,7 +8,7 @@ const tones: Record<Company["tone"], string> = {
   amber: "bg-warning-soft text-warning",
 };
 
-export function CompanyAvatar({ company, size = "md" }: { company?: Company; size?: "md" | "lg" }) {
+export function CompanyAvatar({ company, size = "md" }: { company?: Company | undefined; size?: "md" | "lg" }) {
   return (
     <span
       aria-hidden

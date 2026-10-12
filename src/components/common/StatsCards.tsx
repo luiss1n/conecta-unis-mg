@@ -2,7 +2,7 @@ import { Briefcase, Building2, Gift, GraduationCap } from "lucide-react";
 import { demoStats } from "@/data/demo";
 import { DemoBadge } from "./DemoBadge";
 
-const icons = [GraduationCap, Briefcase, Building2, Gift];
+const icons = [GraduationCap, Briefcase, Building2, Gift] as const;
 
 export function StatsCards() {
   return (
@@ -13,7 +13,7 @@ export function StatsCards() {
       </div>
       <ul className="mt-6 grid grid-cols-2 gap-4 lg:grid-cols-4">
         {demoStats.map((s, i) => {
-          const Icon = icons[i];
+          const Icon = icons[i % icons.length] ?? Gift;
           return (
             <li key={s.label} className="rounded-xl bg-muted/60 p-4">
               <Icon className="h-5 w-5 text-brand-purple" />

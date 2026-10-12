@@ -14,6 +14,6 @@ describe("filterJobs", () => {
   });
   it("sorts most recent first", () => {
     const r = filterJobs(jobs, emptyFilters);
-    expect(r[0].slug).toBe("estagio-desenvolvimento-front-end");
+    expect(r[0]?.slug).toBe("estagio-desenvolvimento-front-end");
   });
 });
