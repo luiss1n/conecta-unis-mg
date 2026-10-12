@@ -10,33 +10,167 @@
 
 import { Route as rootRouteImport } from './routes/__root'
 import { Route as IndexRouteImport } from './routes/index'
+import { Route as AreaEmpresaRouteImport } from './routes/area-empresa'
+import { Route as PerfilRouteImport } from './routes/perfil'
+import { Route as PrivacidadeRouteImport } from './routes/privacidade'
+import { Route as SobreRouteImport } from './routes/sobre'
+import { Route as EmpresasIndexRouteImport } from './routes/empresas.index'
+import { Route as EmpresasSlugRouteImport } from './routes/empresas.$slug'
+import { Route as EventosIndexRouteImport } from './routes/eventos.index'
+import { Route as EventosIdRouteImport } from './routes/eventos.$id'
+import { Route as VagasIndexRouteImport } from './routes/vagas.index'
+import { Route as VagasSlugRouteImport } from './routes/vagas.$slug'
 
 const IndexRoute = IndexRouteImport.update({
   id: '/',
   path: '/',
   getParentRoute: () => rootRouteImport,
 } as any)
+const AreaEmpresaRoute = AreaEmpresaRouteImport.update({
+  id: '/area-empresa',
+  path: '/area-empresa',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const PerfilRoute = PerfilRouteImport.update({
+  id: '/perfil',
+  path: '/perfil',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const PrivacidadeRoute = PrivacidadeRouteImport.update({
+  id: '/privacidade',
+  path: '/privacidade',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const SobreRoute = SobreRouteImport.update({
+  id: '/sobre',
+  path: '/sobre',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const EmpresasIndexRoute = EmpresasIndexRouteImport.update({
+  id: '/empresas/',
+  path: '/empresas/',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const EmpresasSlugRoute = EmpresasSlugRouteImport.update({
+  id: '/empresas/$slug',
+  path: '/empresas/$slug',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const EventosIndexRoute = EventosIndexRouteImport.update({
+  id: '/eventos/',
+  path: '/eventos/',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const EventosIdRoute = EventosIdRouteImport.update({
+  id: '/eventos/$id',
+  path: '/eventos/$id',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const VagasIndexRoute = VagasIndexRouteImport.update({
+  id: '/vagas/',
+  path: '/vagas/',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const VagasSlugRoute = VagasSlugRouteImport.update({
+  id: '/vagas/$slug',
+  path: '/vagas/$slug',
+  getParentRoute: () => rootRouteImport,
+} as any)
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
+  '/area-empresa': typeof AreaEmpresaRoute
+  '/perfil': typeof PerfilRoute
+  '/privacidade': typeof PrivacidadeRoute
+  '/sobre': typeof SobreRoute
+  '/empresas/$slug': typeof EmpresasSlugRoute
+  '/eventos/$id': typeof EventosIdRoute
+  '/vagas/$slug': typeof VagasSlugRoute
+  '/empresas/': typeof EmpresasIndexRoute
+  '/eventos/': typeof EventosIndexRoute
+  '/vagas/': typeof VagasIndexRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
+  '/area-empresa': typeof AreaEmpresaRoute
+  '/perfil': typeof PerfilRoute
+  '/privacidade': typeof PrivacidadeRoute
+  '/sobre': typeof SobreRoute
+  '/empresas/$slug': typeof EmpresasSlugRoute
+  '/eventos/$id': typeof EventosIdRoute
+  '/vagas/$slug': typeof VagasSlugRoute
+  '/empresas': typeof EmpresasIndexRoute
+  '/eventos': typeof EventosIndexRoute
+  '/vagas': typeof VagasIndexRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
+  '/area-empresa': typeof AreaEmpresaRoute
+  '/perfil': typeof PerfilRoute
+  '/privacidade': typeof PrivacidadeRoute
+  '/sobre': typeof SobreRoute
+  '/empresas/$slug': typeof EmpresasSlugRoute
+  '/eventos/$id': typeof EventosIdRoute
+  '/vagas/$slug': typeof VagasSlugRoute
+  '/empresas/': typeof EmpresasIndexRoute
+  '/eventos/': typeof EventosIndexRoute
+  '/vagas/': typeof VagasIndexRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
-  fullPaths: '/'
+  fullPaths:
+    | '/'
+    | '/area-empresa'
+    | '/perfil'
+    | '/privacidade'
+    | '/sobre'
+    | '/empresas/$slug'
+    | '/eventos/$id'
+    | '/vagas/$slug'
+    | '/empresas/'
+    | '/eventos/'
+    | '/vagas/'
   fileRoutesByTo: FileRoutesByTo
-  to: '/'
-  id: '__root__' | '/'
+  to:
+    | '/'
+    | '/area-empresa'
+    | '/perfil'
+    | '/privacidade'
+    | '/sobre'
+    | '/empresas/$slug'
+    | '/eventos/$id'
+    | '/vagas/$slug'
+    | '/empresas'
+    | '/eventos'
+    | '/vagas'
+  id:
+    | '__root__'
+    | '/'
+    | '/area-empresa'
+    | '/perfil'
+    | '/privacidade'
+    | '/sobre'
+    | '/empresas/$slug'
+    | '/eventos/$id'
+    | '/vagas/$slug'
+    | '/empresas/'
+    | '/eventos/'
+    | '/vagas/'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
+  AreaEmpresaRoute: typeof AreaEmpresaRoute
+  PerfilRoute: typeof PerfilRoute
+  PrivacidadeRoute: typeof PrivacidadeRoute
+  SobreRoute: typeof SobreRoute
+  EmpresasSlugRoute: typeof EmpresasSlugRoute
+  EventosIdRoute: typeof EventosIdRoute
+  VagasSlugRoute: typeof VagasSlugRoute
+  EmpresasIndexRoute: typeof EmpresasIndexRoute
+  EventosIndexRoute: typeof EventosIndexRoute
+  VagasIndexRoute: typeof VagasIndexRoute
 }
 
 declare module '@tanstack/react-router' {
@@ -48,11 +182,91 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof IndexRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/area-empresa': {
+      id: '/area-empresa'
+      path: '/area-empresa'
+      fullPath: '/area-empresa'
+      preLoaderRoute: typeof AreaEmpresaRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/perfil': {
+      id: '/perfil'
+      path: '/perfil'
+      fullPath: '/perfil'
+      preLoaderRoute: typeof PerfilRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/privacidade': {
+      id: '/privacidade'
+      path: '/privacidade'
+      fullPath: '/privacidade'
+      preLoaderRoute: typeof PrivacidadeRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/sobre': {
+      id: '/sobre'
+      path: '/sobre'
+      fullPath: '/sobre'
+      preLoaderRoute: typeof SobreRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/empresas/': {
+      id: '/empresas/'
+      path: '/empresas'
+      fullPath: '/empresas/'
+      preLoaderRoute: typeof EmpresasIndexRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/empresas/$slug': {
+      id: '/empresas/$slug'
+      path: '/empresas/$slug'
+      fullPath: '/empresas/$slug'
+      preLoaderRoute: typeof EmpresasSlugRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/eventos/': {
+      id: '/eventos/'
+      path: '/eventos'
+      fullPath: '/eventos/'
+      preLoaderRoute: typeof EventosIndexRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/eventos/$id': {
+      id: '/eventos/$id'
+      path: '/eventos/$id'
+      fullPath: '/eventos/$id'
+      preLoaderRoute: typeof EventosIdRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/vagas/': {
+      id: '/vagas/'
+      path: '/vagas'
+      fullPath: '/vagas/'
+      preLoaderRoute: typeof VagasIndexRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/vagas/$slug': {
+      id: '/vagas/$slug'
+      path: '/vagas/$slug'
+      fullPath: '/vagas/$slug'
+      preLoaderRoute: typeof VagasSlugRouteImport
+      parentRoute: typeof rootRouteImport
+    }
   }
 }
 
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
+  AreaEmpresaRoute: AreaEmpresaRoute,
+  PerfilRoute: PerfilRoute,
+  PrivacidadeRoute: PrivacidadeRoute,
+  SobreRoute: SobreRoute,
+  EmpresasSlugRoute: EmpresasSlugRoute,
+  EventosIdRoute: EventosIdRoute,
+  VagasSlugRoute: VagasSlugRoute,
+  EmpresasIndexRoute: EmpresasIndexRoute,
+  EventosIndexRoute: EventosIndexRoute,
+  VagasIndexRoute: VagasIndexRoute,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)
