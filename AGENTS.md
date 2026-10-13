@@ -10,6 +10,8 @@
 <!-- LOVABLE:END -->
 
 ## Architecture rules
+- The shared Logo renders the supplied image and supports a dark-surface variant; footer colors use dedicated semantic tokens so global accents remain independent.
+- Legacy brand-purple tokens remain compatibility aliases for the blue accent palette to update all consumers consistently.
 - UI reads data only through `src/services/api.ts`; demo data lives in `src/data/*` — so a future REST API (NestJS) can replace the source without touching components.
 - Pure filtering/formatting logic lives in `src/lib/jobs.ts` (tested), separate from UI — eases migration to Next.js.
 - No backend, auth or persistence yet: applications/interest are visual demos only and must say so.

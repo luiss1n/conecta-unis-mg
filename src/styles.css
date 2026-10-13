@@ -17,6 +17,11 @@
   --color-background: var(--background);
   --color-foreground: var(--foreground);
   --color-surface: var(--surface);
+  --color-footer: var(--footer);
+  --color-footer-foreground: var(--footer-foreground);
+  --color-footer-muted: var(--footer-muted);
+  --color-footer-border: var(--footer-border);
+  --color-footer-accent: var(--footer-accent);
   --color-card: var(--card);
   --color-card-foreground: var(--card-foreground);
   --color-popover: var(--popover);
@@ -71,8 +76,13 @@
   --primary: oklch(0.52 0.2 262);
   --primary-foreground: oklch(0.99 0 0);
   --primary-soft: oklch(0.955 0.03 262);
-  --brand-purple: oklch(0.5 0.21 292);
-  --brand-purple-soft: oklch(0.955 0.035 292);
+  --brand-purple: oklch(0.62 0.18 250);
+  --brand-purple-soft: oklch(0.955 0.03 250);
+  --footer: #0F172A;
+  --footer-foreground: oklch(0.98 0.005 250);
+  --footer-muted: oklch(0.8 0.025 250);
+  --footer-border: oklch(0.35 0.035 260);
+  --footer-accent: oklch(0.78 0.12 250);
   --success: oklch(0.55 0.14 155);
   --success-soft: oklch(0.96 0.04 155);
   --warning: oklch(0.6 0.14 65);
@@ -89,7 +99,7 @@
   --input: oklch(0.89 0.014 264);
   --ring: oklch(0.52 0.2 262);
   --chart-1: oklch(0.52 0.2 262);
-  --chart-2: oklch(0.5 0.21 292);
+  --chart-2: var(--brand-purple);
   --chart-3: oklch(0.55 0.14 155);
   --chart-4: oklch(0.6 0.14 65);
   --chart-5: oklch(0.6 0.18 20);
