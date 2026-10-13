@@ -6,6 +6,7 @@ import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover
 import { Sheet, SheetContent, SheetHeader, SheetTitle, SheetTrigger } from "@/components/ui/sheet";
 import { demoNotifications } from "@/data/demo";
 import { getCandidateProfile } from "@/services/api";
+import logo from "@/assets/conecta-unis-logo.png";
 
 const nav = [
   { to: "/", label: "Início", exact: true },
@@ -15,14 +16,12 @@ const nav = [
   { to: "/sobre", label: "Sobre nós" },
 ] as const;
 
-export function Logo() {
+export function Logo({ dark = false }: { dark?: boolean }) {
   return (
     <Link to="/" className="flex shrink-0 items-center gap-2 rounded-md focus-visible:outline-2 focus-visible:outline-ring">
-      <span className="grid h-9 w-9 place-items-center rounded-lg bg-brand-gradient font-display text-sm font-extrabold text-primary-foreground">
-        CU
-      </span>
+      <img src={logo} alt="" className="h-9 w-9 shrink-0 object-contain" width={36} height={36} />
       <span className="font-display text-lg font-extrabold tracking-tight">
-        CONECTA <span className="text-brand-gradient">UNIS</span>
+        CONECTA <span className={dark ? "text-footer-accent" : "text-brand-gradient"}>UNIS</span>
       </span>
     </Link>
   );
