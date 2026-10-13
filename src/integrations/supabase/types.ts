@@ -14,16 +14,330 @@ export type Database = {
   }
   public: {
     Tables: {
-      [_ in never]: never
+      companies: {
+        Row: {
+          about: string
+          city: string
+          created_at: string
+          initials: string
+          name: string
+          owner_id: string
+          sector: string
+          slug: string
+          summary: string
+          tone: string
+        }
+        Insert: {
+          about?: string
+          city: string
+          created_at?: string
+          initials?: string
+          name: string
+          owner_id: string
+          sector: string
+          slug?: string
+          summary?: string
+          tone?: string
+        }
+        Update: {
+          about?: string
+          city?: string
+          created_at?: string
+          initials?: string
+          name?: string
+          owner_id?: string
+          sector?: string
+          slug?: string
+          summary?: string
+          tone?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "companies_owner_id_fkey"
+            columns: ["owner_id"]
+            isOneToOne: true
+            referencedRelation: "profiles"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      company_details: {
+        Row: {
+          cnpj: string
+          legal_name: string
+          user_id: string
+          website: string
+        }
+        Insert: {
+          cnpj: string
+          legal_name: string
+          user_id: string
+          website?: string
+        }
+        Update: {
+          cnpj?: string
+          legal_name?: string
+          user_id?: string
+          website?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "company_details_user_id_fkey"
+            columns: ["user_id"]
+            isOneToOne: true
+            referencedRelation: "profiles"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      event_interests: {
+        Row: {
+          created_at: string
+          event_id: string
+          user_id: string
+        }
+        Insert: {
+          created_at?: string
+          event_id: string
+          user_id: string
+        }
+        Update: {
+          created_at?: string
+          event_id?: string
+          user_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "event_interests_event_id_fkey"
+            columns: ["event_id"]
+            isOneToOne: false
+            referencedRelation: "events"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "event_interests_user_id_fkey"
+            columns: ["user_id"]
+            isOneToOne: false
+            referencedRelation: "profiles"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      events: {
+        Row: {
+          category: string
+          date: string
+          description: string
+          endTime: string
+          id: string
+          location: string
+          mode: string
+          owner_id: string
+          summary: string
+          title: string
+        }
+        Insert: {
+          category: string
+          date: string
+          description: string
+          endTime: string
+          id?: string
+          location: string
+          mode: string
+          owner_id: string
+          summary: string
+          title: string
+        }
+        Update: {
+          category?: string
+          date?: string
+          description?: string
+          endTime?: string
+          id?: string
+          location?: string
+          mode?: string
+          owner_id?: string
+          summary?: string
+          title?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "events_owner_id_fkey"
+            columns: ["owner_id"]
+            isOneToOne: false
+            referencedRelation: "profiles"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      jobs: {
+        Row: {
+          activities: string[]
+          benefits: string[]
+          category: string
+          city: string
+          companySlug: string
+          description: string
+          mode: string
+          owner_id: string
+          publishedAt: string
+          requirements: string[]
+          salary: string | null
+          schedule: string
+          slug: string
+          summary: string
+          title: string
+          type: string
+        }
+        Insert: {
+          activities?: string[]
+          benefits?: string[]
+          category: string
+          city: string
+          companySlug: string
+          description: string
+          mode: string
+          owner_id: string
+          publishedAt?: string
+          requirements?: string[]
+          salary?: string | null
+          schedule: string
+          slug?: string
+          summary: string
+          title: string
+          type: string
+        }
+        Update: {
+          activities?: string[]
+          benefits?: string[]
+          category?: string
+          city?: string
+          companySlug?: string
+          description?: string
+          mode?: string
+          owner_id?: string
+          publishedAt?: string
+          requirements?: string[]
+          salary?: string | null
+          schedule?: string
+          slug?: string
+          summary?: string
+          title?: string
+          type?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "jobs_companySlug_fkey"
+            columns: ["companySlug"]
+            isOneToOne: false
+            referencedRelation: "companies"
+            referencedColumns: ["slug"]
+          },
+          {
+            foreignKeyName: "jobs_owner_id_fkey"
+            columns: ["owner_id"]
+            isOneToOne: false
+            referencedRelation: "profiles"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      professor_details: {
+        Row: {
+          department: string
+          institution: string
+          qualification: string
+          subjects: string
+          user_id: string
+        }
+        Insert: {
+          department: string
+          institution: string
+          qualification: string
+          subjects: string
+          user_id: string
+        }
+        Update: {
+          department?: string
+          institution?: string
+          qualification?: string
+          subjects?: string
+          user_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "professor_details_user_id_fkey"
+            columns: ["user_id"]
+            isOneToOne: true
+            referencedRelation: "profiles"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      profiles: {
+        Row: {
+          avatar_path: string
+          bio: string
+          city: string
+          created_at: string
+          display_name: string
+          id: string
+          phone: string
+          username: string
+        }
+        Insert: {
+          avatar_path?: string
+          bio?: string
+          city?: string
+          created_at?: string
+          display_name?: string
+          id: string
+          phone?: string
+          username?: string
+        }
+        Update: {
+          avatar_path?: string
+          bio?: string
+          city?: string
+          created_at?: string
+          display_name?: string
+          id?: string
+          phone?: string
+          username?: string
+        }
+        Relationships: []
+      }
+      user_roles: {
+        Row: {
+          role: Database["public"]["Enums"]["app_role"]
+          user_id: string
+        }
+        Insert: {
+          role: Database["public"]["Enums"]["app_role"]
+          user_id: string
+        }
+        Update: {
+          role?: Database["public"]["Enums"]["app_role"]
+          user_id?: string
+        }
+        Relationships: []
+      }
     }
     Views: {
       [_ in never]: never
     }
     Functions: {
-      [_ in never]: never
+      has_role: {
+        Args: {
+          _role: Database["public"]["Enums"]["app_role"]
+          _user_id: string
+        }
+        Returns: boolean
+      }
+      save_registration: { Args: { payload: Json }; Returns: undefined }
     }
     Enums: {
-      [_ in never]: never
+      app_role: "company" | "professor"
     }
     CompositeTypes: {
       [_ in never]: never
@@ -150,6 +464,8 @@ export type CompositeTypes<
 
 export const Constants = {
   public: {
-    Enums: {},
+    Enums: {
+      app_role: ["company", "professor"],
+    },
   },
 } as const
