@@ -56,7 +56,7 @@ function AuthPage() {
           ...p.data,
           options: { emailRedirectTo: `${window.location.origin}/cadastro` },
         });
-        if (error) return void toast.error(error.message.includes("registered") ? "Este e-mail já tem conta." : "Não foi possível criar a conta.");
+        if (error) return void toast.error(error.message.includes("registered") ? "Este e-mail já tem conta." : /weak|pwned|guess/i.test(error.message) ? "Essa senha é muito comum e fácil de adivinhar. Escolha uma senha mais forte, misturando letras, números e símbolos." : "Não foi possível criar a conta.");
         if (!data.session) return void setSent("Conta criada! Confirme pelo link enviado ao seu e-mail e depois entre.");
       } else {
         const { error } = await supabase.auth.signInWithPassword(p.data);
