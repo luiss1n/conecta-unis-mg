@@ -54,17 +54,7 @@ O PostgreSQL será utilizado para armazenar os dados da plataforma, enquanto o P
 
 Em uma etapa futura, poderá ser desenvolvido um aplicativo mobile que consuma a mesma API.
 
-## Etapas de desenvolvimento
 
-1. Criação das interfaces com base nos protótipos do Figma.
-2. Implementação da navegação e das interações do front-end.
-3. Organização do código e versionamento no GitHub.
-4. Publicação inicial para demonstração aos usuários.
-5. Desenvolvimento da API com NestJS.
-6. Modelagem e integração do banco de dados PostgreSQL com Prisma.
-7. Implementação de autenticação, perfis e permissões.
-8. Integração das candidaturas, vagas, empresas e eventos.
-9. Testes, melhorias de acessibilidade, segurança e desempenho.
 
 ## Interface do projeto
 
