@@ -33,7 +33,7 @@ function AuthPage() {
   const [busy, setBusy] = useState(false);
   const [sent, setSent] = useState<string | null>(null);
 
-  async function submit(e: FormEvent<HTMLFormElement>) {
+  async function submit(e: FormEvent<HTMLFormElement>): Promise<void> {
     e.preventDefault();
     const f = new FormData(e.currentTarget);
     const email = String(f.get("email") ?? "");
@@ -42,25 +42,25 @@ function AuthPage() {
     try {
       if (mode === "recuperar") {
         const p = creds.shape.email.safeParse(email);
-        if (!p.success) return toast.error(p.error.issues[0]?.message);
+        if (!p.success) return void toast.error(p.error.issues[0]?.message);
         const { error } = await supabase.auth.resetPasswordForEmail(p.data, {
           redirectTo: `${window.location.origin}/reset-password`,
         });
-        if (error) return toast.error("Não foi possível enviar o e-mail.");
-        return setSent("Enviamos um link para redefinir sua senha.");
+        if (error) return void toast.error("Não foi possível enviar o e-mail.");
+        return void setSent("Enviamos um link para redefinir sua senha.");
       }
       const p = creds.safeParse({ email, password });
-      if (!p.success) return toast.error(p.error.issues[0]?.message);
+      if (!p.success) return void toast.error(p.error.issues[0]?.message);
       if (mode === "criar") {
         const { data, error } = await supabase.auth.signUp({
           ...p.data,
           options: { emailRedirectTo: `${window.location.origin}/cadastro` },
         });
-        if (error) return toast.error(error.message.includes("registered") ? "Este e-mail já tem conta." : "Não foi possível criar a conta.");
-        if (!data.session) return setSent("Conta criada! Confirme pelo link enviado ao seu e-mail e depois entre.");
+        if (error) return void toast.error(error.message.includes("registered") ? "Este e-mail já tem conta." : "Não foi possível criar a conta.");
+        if (!data.session) return void setSent("Conta criada! Confirme pelo link enviado ao seu e-mail e depois entre.");
       } else {
         const { error } = await supabase.auth.signInWithPassword(p.data);
-        if (error) return toast.error("E-mail ou senha incorretos.");
+        if (error) return void toast.error("E-mail ou senha incorretos.");
       }
       navigate({ to: "/cadastro" });
     } finally {
@@ -68,9 +68,9 @@ function AuthPage() {
     }
   }
 
-  async function google() {
+  async function google(): Promise<void> {
     const r = await lovable.auth.signInWithOAuth("google", { redirect_uri: `${window.location.origin}/auth` });
-    if (r.error) return toast.error("Não foi possível entrar com Google.");
+    if (r.error) return void toast.error("Não foi possível entrar com Google.");
     if (!r.redirected) navigate({ to: "/cadastro" });
   }
 

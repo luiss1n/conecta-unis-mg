@@ -21,14 +21,14 @@ export const Route = createFileRoute("/reset-password")({
 function ResetPassword() {
   const navigate = useNavigate();
   const [busy, setBusy] = useState(false);
-  async function submit(e: FormEvent<HTMLFormElement>) {
+  async function submit(e: FormEvent<HTMLFormElement>): Promise<void> {
     e.preventDefault();
     const password = String(new FormData(e.currentTarget).get("password") ?? "");
-    if (password.length < 8) return toast.error("A senha precisa de pelo menos 8 caracteres");
+    if (password.length < 8) return void toast.error("A senha precisa de pelo menos 8 caracteres");
     setBusy(true);
     const { error } = await supabase.auth.updateUser({ password });
     setBusy(false);
-    if (error) return toast.error("Link expirado ou inválido. Peça um novo.");
+    if (error) return void toast.error("Link expirado ou inválido. Peça um novo.");
     toast.success("Senha atualizada!");
     navigate({ to: "/cadastro" });
   }

@@ -84,15 +84,15 @@ function Registration() {
   const d = data.values;
   const locked = !!data.role;
 
-  async function submit(e: FormEvent<HTMLFormElement>) {
+  async function submit(e: FormEvent<HTMLFormElement>): Promise<void> {
     e.preventDefault();
     const raw = { ...Object.fromEntries(new FormData(e.currentTarget)), kind };
     const parsed = (kind === "company" ? company : professor).safeParse(raw);
-    if (!parsed.success) return toast.error(parsed.error.issues[0]?.message);
+    if (!parsed.success) return void toast.error(parsed.error.issues[0]?.message);
     setBusy(true);
     const { error } = await supabase.rpc("save_registration", { payload: parsed.data });
     setBusy(false);
-    if (error) return toast.error("Não foi possível salvar. Verifique os dados (o usuário pode já estar em uso).");
+    if (error) return void toast.error("Não foi possível salvar. Verifique os dados (o usuário pode já estar em uso).");
     toast.success("Cadastro salvo!");
     qc.invalidateQueries({ queryKey: ["registration"] });
   }
