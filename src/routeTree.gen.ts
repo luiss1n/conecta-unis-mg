@@ -10,10 +10,14 @@
 
 import { Route as rootRouteImport } from './routes/__root'
 import { Route as IndexRouteImport } from './routes/index'
+import { Route as AuthenticatedRouteRouteImport } from './routes/_authenticated/route'
 import { Route as AreaEmpresaRouteImport } from './routes/area-empresa'
+import { Route as AuthRouteImport } from './routes/auth'
 import { Route as PerfilRouteImport } from './routes/perfil'
 import { Route as PrivacidadeRouteImport } from './routes/privacidade'
+import { Route as ResetPasswordRouteImport } from './routes/reset-password'
 import { Route as SobreRouteImport } from './routes/sobre'
+import { Route as AuthenticatedCadastroRouteImport } from './routes/_authenticated/cadastro'
 import { Route as EmpresasIndexRouteImport } from './routes/empresas.index'
 import { Route as EmpresasSlugRouteImport } from './routes/empresas.$slug'
 import { Route as EventosIndexRouteImport } from './routes/eventos.index'
@@ -26,9 +30,18 @@ const IndexRoute = IndexRouteImport.update({
   path: '/',
   getParentRoute: () => rootRouteImport,
 } as any)
+const AuthenticatedRouteRoute = AuthenticatedRouteRouteImport.update({
+  id: '/_authenticated',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const AreaEmpresaRoute = AreaEmpresaRouteImport.update({
   id: '/area-empresa',
   path: '/area-empresa',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const AuthRoute = AuthRouteImport.update({
+  id: '/auth',
+  path: '/auth',
   getParentRoute: () => rootRouteImport,
 } as any)
 const PerfilRoute = PerfilRouteImport.update({
@@ -41,10 +54,20 @@ const PrivacidadeRoute = PrivacidadeRouteImport.update({
   path: '/privacidade',
   getParentRoute: () => rootRouteImport,
 } as any)
+const ResetPasswordRoute = ResetPasswordRouteImport.update({
+  id: '/reset-password',
+  path: '/reset-password',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const SobreRoute = SobreRouteImport.update({
   id: '/sobre',
   path: '/sobre',
   getParentRoute: () => rootRouteImport,
+} as any)
+const AuthenticatedCadastroRoute = AuthenticatedCadastroRouteImport.update({
+  id: '/cadastro',
+  path: '/cadastro',
+  getParentRoute: () => AuthenticatedRouteRoute,
 } as any)
 const EmpresasIndexRoute = EmpresasIndexRouteImport.update({
   id: '/empresas/',
@@ -80,9 +103,12 @@ const VagasSlugRoute = VagasSlugRouteImport.update({
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
   '/area-empresa': typeof AreaEmpresaRoute
+  '/auth': typeof AuthRoute
   '/perfil': typeof PerfilRoute
   '/privacidade': typeof PrivacidadeRoute
+  '/reset-password': typeof ResetPasswordRoute
   '/sobre': typeof SobreRoute
+  '/cadastro': typeof AuthenticatedCadastroRoute
   '/empresas/$slug': typeof EmpresasSlugRoute
   '/eventos/$id': typeof EventosIdRoute
   '/vagas/$slug': typeof VagasSlugRoute
@@ -93,9 +119,12 @@ export interface FileRoutesByFullPath {
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
   '/area-empresa': typeof AreaEmpresaRoute
+  '/auth': typeof AuthRoute
   '/perfil': typeof PerfilRoute
   '/privacidade': typeof PrivacidadeRoute
+  '/reset-password': typeof ResetPasswordRoute
   '/sobre': typeof SobreRoute
+  '/cadastro': typeof AuthenticatedCadastroRoute
   '/empresas/$slug': typeof EmpresasSlugRoute
   '/eventos/$id': typeof EventosIdRoute
   '/vagas/$slug': typeof VagasSlugRoute
@@ -106,10 +135,14 @@ export interface FileRoutesByTo {
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
+  '/_authenticated': typeof AuthenticatedRouteRouteWithChildren
   '/area-empresa': typeof AreaEmpresaRoute
+  '/auth': typeof AuthRoute
   '/perfil': typeof PerfilRoute
   '/privacidade': typeof PrivacidadeRoute
+  '/reset-password': typeof ResetPasswordRoute
   '/sobre': typeof SobreRoute
+  '/_authenticated/cadastro': typeof AuthenticatedCadastroRoute
   '/empresas/$slug': typeof EmpresasSlugRoute
   '/eventos/$id': typeof EventosIdRoute
   '/vagas/$slug': typeof VagasSlugRoute
@@ -122,9 +155,12 @@ export interface FileRouteTypes {
   fullPaths:
     | '/'
     | '/area-empresa'
+    | '/auth'
     | '/perfil'
     | '/privacidade'
+    | '/reset-password'
     | '/sobre'
+    | '/cadastro'
     | '/empresas/$slug'
     | '/eventos/$id'
     | '/vagas/$slug'
@@ -135,9 +171,12 @@ export interface FileRouteTypes {
   to:
     | '/'
     | '/area-empresa'
+    | '/auth'
     | '/perfil'
     | '/privacidade'
+    | '/reset-password'
     | '/sobre'
+    | '/cadastro'
     | '/empresas/$slug'
     | '/eventos/$id'
     | '/vagas/$slug'
@@ -147,10 +186,14 @@ export interface FileRouteTypes {
   id:
     | '__root__'
     | '/'
+    | '/_authenticated'
     | '/area-empresa'
+    | '/auth'
     | '/perfil'
     | '/privacidade'
+    | '/reset-password'
     | '/sobre'
+    | '/_authenticated/cadastro'
     | '/empresas/$slug'
     | '/eventos/$id'
     | '/vagas/$slug'
@@ -161,9 +204,12 @@ export interface FileRouteTypes {
 }
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
+  AuthenticatedRouteRoute: typeof AuthenticatedRouteRouteWithChildren
   AreaEmpresaRoute: typeof AreaEmpresaRoute
+  AuthRoute: typeof AuthRoute
   PerfilRoute: typeof PerfilRoute
   PrivacidadeRoute: typeof PrivacidadeRoute
+  ResetPasswordRoute: typeof ResetPasswordRoute
   SobreRoute: typeof SobreRoute
   EmpresasSlugRoute: typeof EmpresasSlugRoute
   EventosIdRoute: typeof EventosIdRoute
@@ -182,11 +228,25 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof IndexRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/_authenticated': {
+      id: '/_authenticated'
+      path: ''
+      fullPath: '/'
+      preLoaderRoute: typeof AuthenticatedRouteRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/area-empresa': {
       id: '/area-empresa'
       path: '/area-empresa'
       fullPath: '/area-empresa'
       preLoaderRoute: typeof AreaEmpresaRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/auth': {
+      id: '/auth'
+      path: '/auth'
+      fullPath: '/auth'
+      preLoaderRoute: typeof AuthRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/perfil': {
@@ -203,12 +263,26 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof PrivacidadeRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/reset-password': {
+      id: '/reset-password'
+      path: '/reset-password'
+      fullPath: '/reset-password'
+      preLoaderRoute: typeof ResetPasswordRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/sobre': {
       id: '/sobre'
       path: '/sobre'
       fullPath: '/sobre'
       preLoaderRoute: typeof SobreRouteImport
       parentRoute: typeof rootRouteImport
+    }
+    '/_authenticated/cadastro': {
+      id: '/_authenticated/cadastro'
+      path: '/cadastro'
+      fullPath: '/cadastro'
+      preLoaderRoute: typeof AuthenticatedCadastroRouteImport
+      parentRoute: typeof AuthenticatedRouteRoute
     }
     '/empresas/': {
       id: '/empresas/'
@@ -255,11 +329,25 @@ declare module '@tanstack/react-router' {
   }
 }
 
+interface AuthenticatedRouteRouteChildren {
+  AuthenticatedCadastroRoute: typeof AuthenticatedCadastroRoute
+}
+
+const AuthenticatedRouteRouteChildren: AuthenticatedRouteRouteChildren = {
+  AuthenticatedCadastroRoute: AuthenticatedCadastroRoute,
+}
+
+const AuthenticatedRouteRouteWithChildren =
+  AuthenticatedRouteRoute._addFileChildren(AuthenticatedRouteRouteChildren)
+
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
+  AuthenticatedRouteRoute: AuthenticatedRouteRouteWithChildren,
   AreaEmpresaRoute: AreaEmpresaRoute,
+  AuthRoute: AuthRoute,
   PerfilRoute: PerfilRoute,
   PrivacidadeRoute: PrivacidadeRoute,
+  ResetPasswordRoute: ResetPasswordRoute,
   SobreRoute: SobreRoute,
   EmpresasSlugRoute: EmpresasSlugRoute,
   EventosIdRoute: EventosIdRoute,

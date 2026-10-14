@@ -1,11 +1,13 @@
-import { Link } from "@tanstack/react-router";
+import { Link, useNavigate } from "@tanstack/react-router";
+import { useQueryClient } from "@tanstack/react-query";
 import { Bell, Building2, Menu, Plus } from "lucide-react";
 import { useState } from "react";
 import { Button } from "@/components/ui/button";
 import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover";
 import { Sheet, SheetContent, SheetHeader, SheetTitle, SheetTrigger } from "@/components/ui/sheet";
 import { demoNotifications } from "@/data/demo";
-import { getCandidateProfile } from "@/services/api";
+import { useSession } from "@/hooks/use-session";
+import { supabase } from "@/integrations/supabase/client";
 import logo from "@/assets/conecta-unis-logo.png";
 
 const nav = [
@@ -30,8 +32,15 @@ export function Logo({ dark = false }: { dark?: boolean }) {
 export function Header() {
   const [open, setOpen] = useState(false);
   const [unread, setUnread] = useState(demoNotifications.length);
-  const user = getCandidateProfile();
-  const initials = user.name.split(" ").map((p) => p[0]).slice(0, 2).join("");
+  const { session } = useSession();
+  const navigate = useNavigate();
+  const qc = useQueryClient();
+  async function signOut() {
+    await qc.cancelQueries();
+    qc.clear();
+    await supabase.auth.signOut();
+    navigate({ to: "/auth", replace: true });
+  }
 
   return (
     <header className="sticky top-0 z-40 border-b bg-surface/90 backdrop-blur">
@@ -86,13 +95,14 @@ export function Header() {
               <Plus className="h-4 w-4" /> Publicar vaga
             </Link>
           </Button>
-          <Link
-            to="/perfil"
-            aria-label={`Perfil de ${user.name}`}
-            className="hidden h-9 w-9 place-items-center rounded-full bg-brand-purple-soft text-sm font-bold text-brand-purple ring-offset-2 hover:ring-2 hover:ring-brand-purple/30 sm:grid"
-          >
-            {initials}
-          </Link>
+          {session ? (
+            <>
+              <Button asChild variant="outline" size="sm"><Link to="/cadastro">Meu cadastro</Link></Button>
+              <Button variant="ghost" size="sm" onClick={signOut}>Sair</Button>
+            </>
+          ) : (
+            <Button asChild variant="outline" size="sm"><Link to="/auth">Entrar</Link></Button>
+          )}
           <Sheet open={open} onOpenChange={setOpen}>
             <SheetTrigger asChild>
               <Button variant="ghost" size="icon" className="lg:hidden" aria-label="Abrir menu">
@@ -117,8 +127,8 @@ export function Header() {
                   </Link>
                 ))}
                 <hr className="my-2" />
-                <Link to="/perfil" onClick={() => setOpen(false)} className="rounded-md px-3 py-3 font-medium hover:bg-muted">
-                  Meu perfil
+                <Link to={session ? "/cadastro" : "/auth"} onClick={() => setOpen(false)} className="rounded-md px-3 py-3 font-medium hover:bg-muted">
+                  {session ? "Meu cadastro" : "Entrar"}
                 </Link>
                 <Link to="/area-empresa" onClick={() => setOpen(false)} className="rounded-md px-3 py-3 font-medium hover:bg-muted">
                   Acesso para empresas
