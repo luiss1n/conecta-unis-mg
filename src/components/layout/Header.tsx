@@ -127,8 +127,8 @@ export function Header() {
                   </Link>
                 ))}
                 <hr className="my-2" />
-                <Link to="/perfil" onClick={() => setOpen(false)} className="rounded-md px-3 py-3 font-medium hover:bg-muted">
-                  Meu perfil
+                <Link to={session ? "/cadastro" : "/auth"} onClick={() => setOpen(false)} className="rounded-md px-3 py-3 font-medium hover:bg-muted">
+                  {session ? "Meu cadastro" : "Entrar"}
                 </Link>
                 <Link to="/area-empresa" onClick={() => setOpen(false)} className="rounded-md px-3 py-3 font-medium hover:bg-muted">
                   Acesso para empresas
