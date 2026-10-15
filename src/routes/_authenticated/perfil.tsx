@@ -4,7 +4,7 @@ import { DemoBadge } from "@/components/common/DemoBadge";
 import { PageHeader } from "@/components/common/PageHeader";
 import { getCandidateProfile } from "@/services/api";
 
-export const Route = createFileRoute("/perfil")({
+export const Route = createFileRoute("/_authenticated/perfil")({
   head: () => ({
     meta: [
       { title: "Meu perfil — CONECTA UNIS" },
