@@ -97,7 +97,7 @@ export function Header() {
           </Button>
           {session ? (
             <>
-              <Button asChild variant="outline" size="sm"><Link to="/cadastro">Meu cadastro</Link></Button>
+              <Button asChild variant="outline" size="sm"><Link to="/perfil">Meu perfil</Link></Button>
               <Button variant="ghost" size="sm" onClick={signOut}>Sair</Button>
             </>
           ) : (
@@ -127,8 +127,8 @@ export function Header() {
                   </Link>
                 ))}
                 <hr className="my-2" />
-                <Link to={session ? "/cadastro" : "/auth"} onClick={() => setOpen(false)} className="rounded-md px-3 py-3 font-medium hover:bg-muted">
-                  {session ? "Meu cadastro" : "Entrar"}
+                <Link to={session ? "/perfil" : "/auth"} onClick={() => setOpen(false)} className="rounded-md px-3 py-3 font-medium hover:bg-muted">
+                  {session ? "Meu perfil" : "Entrar"}
                 </Link>
                 <Link to="/area-empresa" onClick={() => setOpen(false)} className="rounded-md px-3 py-3 font-medium hover:bg-muted">
                   Acesso para empresas

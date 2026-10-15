@@ -14,4 +14,6 @@
 - Legacy brand-purple tokens remain compatibility aliases for the blue accent palette to update all consumers consistently.
 - UI reads data only through `src/services/api.ts`; demo data lives in `src/data/*` — so a future REST API (NestJS) can replace the source without touching components.
 - Pure filtering/formatting logic lives in `src/lib/jobs.ts` (tested), separate from UI — eases migration to Next.js.
-- No backend, auth or persistence yet: applications/interest are visual demos only and must say so.
+- Account and profile persistence uses Lovable Cloud; catalog applications/interest remain demos until explicitly replaced.
+- Private profile reads and file operations live in the service layer; owner-scoped RLS and validation triggers enforce access independently of the UI.
+- Profile files use the private profile-photos bucket, owner-prefixed unique paths and temporary signed URLs, so private files never become public by accident.
