@@ -15,6 +15,13 @@
       "when": 1792076075517,
       "tag": "0001_visitor_account_type",
       "breakpoints": true
+    },
+    {
+      "idx": 2,
+      "version": "7",
+      "when": 1792076149736,
+      "tag": "0002_complete_private_profiles",
+      "breakpoints": true
     }
   ]
 }

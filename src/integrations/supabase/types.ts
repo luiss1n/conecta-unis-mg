@@ -276,33 +276,60 @@ export type Database = {
       }
       profiles: {
         Row: {
+          address: string
           avatar_path: string
+          banner_path: string
           bio: string
           city: string
+          country: string
           created_at: string
           display_name: string
+          education: string
+          headline: string
           id: string
+          institution: string
           phone: string
+          resume_name: string
+          resume_path: string
+          state: string
           username: string
         }
         Insert: {
+          address?: string
           avatar_path?: string
+          banner_path?: string
           bio?: string
           city?: string
+          country?: string
           created_at?: string
           display_name?: string
+          education?: string
+          headline?: string
           id: string
+          institution?: string
           phone?: string
+          resume_name?: string
+          resume_path?: string
+          state?: string
           username?: string
         }
         Update: {
+          address?: string
           avatar_path?: string
+          banner_path?: string
           bio?: string
           city?: string
+          country?: string
           created_at?: string
           display_name?: string
+          education?: string
+          headline?: string
           id?: string
+          institution?: string
           phone?: string
+          resume_name?: string
+          resume_path?: string
+          state?: string
           username?: string
         }
         Relationships: []
