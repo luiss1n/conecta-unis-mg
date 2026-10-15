@@ -105,9 +105,7 @@ function Home() {
             />
           ) : (
             <>
-              <Reveal delay={100}>
-                <JobList jobs={shown} />
-              </Reveal>
+              <JobList jobs={shown} />
               <Reveal className="mt-6 flex justify-center">
                 {limit < results.length ? (
                   <Button variant="outline" size="lg" className="btn-press" onClick={() => setLimit((l) => l + PAGE)}>Ver mais vagas</Button>
