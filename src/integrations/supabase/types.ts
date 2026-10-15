@@ -337,7 +337,7 @@ export type Database = {
       save_registration: { Args: { payload: Json }; Returns: undefined }
     }
     Enums: {
-      app_role: "company" | "professor"
+      app_role: "company" | "professor" | "visitor"
     }
     CompositeTypes: {
       [_ in never]: never
@@ -465,7 +465,7 @@ export type CompositeTypes<
 export const Constants = {
   public: {
     Enums: {
-      app_role: ["company", "professor"],
+      app_role: ["company", "professor", "visitor"],
     },
   },
 } as const
