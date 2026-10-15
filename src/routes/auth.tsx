@@ -54,7 +54,7 @@ function AuthPage() {
       if (mode === "criar") {
         const { data, error } = await supabase.auth.signUp({
           ...p.data,
-          options: { emailRedirectTo: `${window.location.origin}/cadastro` },
+          options: { emailRedirectTo: window.location.origin },
         });
         if (error) return void toast.error(error.message.includes("registered") ? "Este e-mail já tem conta." : /weak|pwned|guess/i.test(error.message) ? "Essa senha é muito comum e fácil de adivinhar. Escolha uma senha mais forte, misturando letras, números e símbolos." : "Não foi possível criar a conta.");
         if (!data.session) return void setSent("Conta criada! Confirme pelo link enviado ao seu e-mail e depois entre.");
@@ -81,7 +81,7 @@ function AuthPage() {
       <div className="w-full max-w-md rounded-xl border bg-card p-8 shadow-card">
         <h1 className="font-display text-2xl font-extrabold">{title}</h1>
         <p className="mt-1 text-sm text-muted-foreground">
-          Depois do acesso, você escolhe se é empresa ou professor.
+          Acesse seu perfil de empresa, visitante ou professor.
         </p>
         {sent ? (
           <p className="mt-6 rounded-md bg-primary-soft p-4 text-sm text-primary">{sent}</p>

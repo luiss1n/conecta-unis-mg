@@ -13,11 +13,11 @@ import { Route as IndexRouteImport } from './routes/index'
 import { Route as AuthenticatedRouteRouteImport } from './routes/_authenticated/route'
 import { Route as AreaEmpresaRouteImport } from './routes/area-empresa'
 import { Route as AuthRouteImport } from './routes/auth'
-import { Route as PerfilRouteImport } from './routes/perfil'
 import { Route as PrivacidadeRouteImport } from './routes/privacidade'
 import { Route as ResetPasswordRouteImport } from './routes/reset-password'
 import { Route as SobreRouteImport } from './routes/sobre'
 import { Route as AuthenticatedCadastroRouteImport } from './routes/_authenticated/cadastro'
+import { Route as AuthenticatedPerfilRouteImport } from './routes/_authenticated/perfil'
 import { Route as EmpresasIndexRouteImport } from './routes/empresas.index'
 import { Route as EmpresasSlugRouteImport } from './routes/empresas.$slug'
 import { Route as EventosIndexRouteImport } from './routes/eventos.index'
@@ -44,11 +44,6 @@ const AuthRoute = AuthRouteImport.update({
   path: '/auth',
   getParentRoute: () => rootRouteImport,
 } as any)
-const PerfilRoute = PerfilRouteImport.update({
-  id: '/perfil',
-  path: '/perfil',
-  getParentRoute: () => rootRouteImport,
-} as any)
 const PrivacidadeRoute = PrivacidadeRouteImport.update({
   id: '/privacidade',
   path: '/privacidade',
@@ -67,6 +62,11 @@ const SobreRoute = SobreRouteImport.update({
 const AuthenticatedCadastroRoute = AuthenticatedCadastroRouteImport.update({
   id: '/cadastro',
   path: '/cadastro',
+  getParentRoute: () => AuthenticatedRouteRoute,
+} as any)
+const AuthenticatedPerfilRoute = AuthenticatedPerfilRouteImport.update({
+  id: '/perfil',
+  path: '/perfil',
   getParentRoute: () => AuthenticatedRouteRoute,
 } as any)
 const EmpresasIndexRoute = EmpresasIndexRouteImport.update({
@@ -104,11 +104,11 @@ export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
   '/area-empresa': typeof AreaEmpresaRoute
   '/auth': typeof AuthRoute
-  '/perfil': typeof PerfilRoute
   '/privacidade': typeof PrivacidadeRoute
   '/reset-password': typeof ResetPasswordRoute
   '/sobre': typeof SobreRoute
   '/cadastro': typeof AuthenticatedCadastroRoute
+  '/perfil': typeof AuthenticatedPerfilRoute
   '/empresas/$slug': typeof EmpresasSlugRoute
   '/eventos/$id': typeof EventosIdRoute
   '/vagas/$slug': typeof VagasSlugRoute
@@ -120,11 +120,11 @@ export interface FileRoutesByTo {
   '/': typeof IndexRoute
   '/area-empresa': typeof AreaEmpresaRoute
   '/auth': typeof AuthRoute
-  '/perfil': typeof PerfilRoute
   '/privacidade': typeof PrivacidadeRoute
   '/reset-password': typeof ResetPasswordRoute
   '/sobre': typeof SobreRoute
   '/cadastro': typeof AuthenticatedCadastroRoute
+  '/perfil': typeof AuthenticatedPerfilRoute
   '/empresas/$slug': typeof EmpresasSlugRoute
   '/eventos/$id': typeof EventosIdRoute
   '/vagas/$slug': typeof VagasSlugRoute
@@ -138,11 +138,11 @@ export interface FileRoutesById {
   '/_authenticated': typeof AuthenticatedRouteRouteWithChildren
   '/area-empresa': typeof AreaEmpresaRoute
   '/auth': typeof AuthRoute
-  '/perfil': typeof PerfilRoute
   '/privacidade': typeof PrivacidadeRoute
   '/reset-password': typeof ResetPasswordRoute
   '/sobre': typeof SobreRoute
   '/_authenticated/cadastro': typeof AuthenticatedCadastroRoute
+  '/_authenticated/perfil': typeof AuthenticatedPerfilRoute
   '/empresas/$slug': typeof EmpresasSlugRoute
   '/eventos/$id': typeof EventosIdRoute
   '/vagas/$slug': typeof VagasSlugRoute
@@ -156,11 +156,11 @@ export interface FileRouteTypes {
     | '/'
     | '/area-empresa'
     | '/auth'
-    | '/perfil'
     | '/privacidade'
     | '/reset-password'
     | '/sobre'
     | '/cadastro'
+    | '/perfil'
     | '/empresas/$slug'
     | '/eventos/$id'
     | '/vagas/$slug'
@@ -172,11 +172,11 @@ export interface FileRouteTypes {
     | '/'
     | '/area-empresa'
     | '/auth'
-    | '/perfil'
     | '/privacidade'
     | '/reset-password'
     | '/sobre'
     | '/cadastro'
+    | '/perfil'
     | '/empresas/$slug'
     | '/eventos/$id'
     | '/vagas/$slug'
@@ -189,11 +189,11 @@ export interface FileRouteTypes {
     | '/_authenticated'
     | '/area-empresa'
     | '/auth'
-    | '/perfil'
     | '/privacidade'
     | '/reset-password'
     | '/sobre'
     | '/_authenticated/cadastro'
+    | '/_authenticated/perfil'
     | '/empresas/$slug'
     | '/eventos/$id'
     | '/vagas/$slug'
@@ -207,7 +207,6 @@ export interface RootRouteChildren {
   AuthenticatedRouteRoute: typeof AuthenticatedRouteRouteWithChildren
   AreaEmpresaRoute: typeof AreaEmpresaRoute
   AuthRoute: typeof AuthRoute
-  PerfilRoute: typeof PerfilRoute
   PrivacidadeRoute: typeof PrivacidadeRoute
   ResetPasswordRoute: typeof ResetPasswordRoute
   SobreRoute: typeof SobreRoute
@@ -249,13 +248,6 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AuthRouteImport
       parentRoute: typeof rootRouteImport
     }
-    '/perfil': {
-      id: '/perfil'
-      path: '/perfil'
-      fullPath: '/perfil'
-      preLoaderRoute: typeof PerfilRouteImport
-      parentRoute: typeof rootRouteImport
-    }
     '/privacidade': {
       id: '/privacidade'
       path: '/privacidade'
@@ -282,6 +274,13 @@ declare module '@tanstack/react-router' {
       path: '/cadastro'
       fullPath: '/cadastro'
       preLoaderRoute: typeof AuthenticatedCadastroRouteImport
+      parentRoute: typeof AuthenticatedRouteRoute
+    }
+    '/_authenticated/perfil': {
+      id: '/_authenticated/perfil'
+      path: '/perfil'
+      fullPath: '/perfil'
+      preLoaderRoute: typeof AuthenticatedPerfilRouteImport
       parentRoute: typeof AuthenticatedRouteRoute
     }
     '/empresas/': {
@@ -331,10 +330,12 @@ declare module '@tanstack/react-router' {
 
 interface AuthenticatedRouteRouteChildren {
   AuthenticatedCadastroRoute: typeof AuthenticatedCadastroRoute
+  AuthenticatedPerfilRoute: typeof AuthenticatedPerfilRoute
 }
 
 const AuthenticatedRouteRouteChildren: AuthenticatedRouteRouteChildren = {
   AuthenticatedCadastroRoute: AuthenticatedCadastroRoute,
+  AuthenticatedPerfilRoute: AuthenticatedPerfilRoute,
 }
 
 const AuthenticatedRouteRouteWithChildren =
@@ -345,7 +346,6 @@ const rootRouteChildren: RootRouteChildren = {
   AuthenticatedRouteRoute: AuthenticatedRouteRouteWithChildren,
   AreaEmpresaRoute: AreaEmpresaRoute,
   AuthRoute: AuthRoute,
-  PerfilRoute: PerfilRoute,
   PrivacidadeRoute: PrivacidadeRoute,
   ResetPasswordRoute: ResetPasswordRoute,
   SobreRoute: SobreRoute,

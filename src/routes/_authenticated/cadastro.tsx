@@ -1,6 +1,6 @@
-import { createFileRoute } from "@tanstack/react-router";
+import { createFileRoute, useNavigate } from "@tanstack/react-router";
 import { useQuery, useQueryClient } from "@tanstack/react-query";
-import { Building2, GraduationCap } from "lucide-react";
+import { Building2, GraduationCap, UserRound } from "lucide-react";
 import { useEffect, useState, type FormEvent } from "react";
 import { toast } from "sonner";
 import { z } from "zod";
@@ -22,7 +22,7 @@ export const Route = createFileRoute("/_authenticated/cadastro")({
   component: Registration,
 });
 
-type Kind = "company" | "professor";
+type Kind = "company" | "professor" | "visitor";
 
 const base = z.object({
   display_name: z.string().trim().min(2, "Informe seu nome").max(100),
@@ -49,7 +49,8 @@ const professor = base.extend({
 
 async function loadRegistration() {
   const { data: u } = await supabase.auth.getUser();
-  const uid = u.user!.id;
+  if (!u.user) throw new Error("Entre na sua conta para continuar");
+  const uid = u.user.id;
   const [p, r, cd, co, pd] = await Promise.all([
     supabase.from("profiles").select("*").eq("id", uid).maybeSingle(),
     supabase.from("user_roles").select("role").eq("user_id", uid).maybeSingle(),
@@ -58,7 +59,7 @@ async function loadRegistration() {
     supabase.from("professor_details").select("*").eq("user_id", uid).maybeSingle(),
   ]);
   return {
-    email: u.user!.email ?? "",
+    email: u.user.email ?? "",
     role: (r.data?.role ?? null) as Kind | null,
     values: { ...p.data, ...cd.data, company_name: co.data?.name, sector: co.data?.sector, ...pd.data } as Record<string, string | undefined>,
   };
@@ -74,6 +75,7 @@ function Field({ name, label, d, area, ...rest }: { name: string; label: string;
 }
 
 function Registration() {
+  const navigate = useNavigate();
   const qc = useQueryClient();
   const { data, isLoading } = useQuery({ queryKey: ["registration"], queryFn: loadRegistration });
   const [kind, setKind] = useState<Kind | null>(null);
@@ -87,7 +89,7 @@ function Registration() {
   async function submit(e: FormEvent<HTMLFormElement>): Promise<void> {
     e.preventDefault();
     const raw = { ...Object.fromEntries(new FormData(e.currentTarget)), kind };
-    const parsed = (kind === "company" ? company : professor).safeParse(raw);
+    const parsed = (kind === "company" ? company : kind === "professor" ? professor : base.extend({ kind: z.literal("visitor") })).safeParse(raw);
     if (!parsed.success) return void toast.error(parsed.error.issues[0]?.message);
     setBusy(true);
     const { error } = await supabase.rpc("save_registration", { payload: parsed.data });
@@ -95,6 +97,8 @@ function Registration() {
     if (error) return void toast.error("Não foi possível salvar. Verifique os dados (o usuário pode já estar em uso).");
     toast.success("Cadastro salvo!");
     qc.invalidateQueries({ queryKey: ["registration"] });
+    qc.invalidateQueries({ queryKey: ["my-profile"] });
+    navigate({ to: "/perfil" });
   }
 
   return (
@@ -102,19 +106,19 @@ function Registration() {
       <h1 className="font-display text-3xl font-extrabold">Meu cadastro</h1>
       <p className="mt-1 text-sm text-muted-foreground">Conta: {data.email}</p>
 
-      <div className="mt-8 grid gap-3 sm:grid-cols-2">
-        {([["company", "Sou empresa", "Publique vagas para estudantes", Building2], ["professor", "Sou professor", "Divulgue eventos e oficinas", GraduationCap]] as const).map(([k, t, s, Icon]) => (
-          <button
+      <div className="mt-8 grid gap-3 sm:grid-cols-3">
+        {([["company", "Sou empresa", "Empresa", Building2], ["visitor", "Sou visitante", "Perfil pessoal", UserRound], ["professor", "Sou professor", "Perfil acadêmico", GraduationCap]] as const).map(([k, t, s, Icon]) => (
+          <Button variant="outline"
             key={k}
             type="button"
             disabled={locked && data.role !== k}
             onClick={() => setKind(k)}
             aria-pressed={kind === k}
-            className={`flex items-start gap-3 rounded-xl border p-5 text-left transition disabled:opacity-40 ${kind === k ? "border-primary bg-primary-soft" : "bg-card hover:border-primary/50"}`}
+            className={`h-auto items-start justify-start gap-3 whitespace-normal rounded-lg p-4 text-left disabled:opacity-40 ${kind === k ? "border-primary bg-primary-soft" : "bg-card"}`}
           >
             <Icon className="mt-0.5 h-5 w-5 text-primary" />
             <span><span className="block font-bold">{t}</span><span className="text-sm text-muted-foreground">{s}</span></span>
-          </button>
+          </Button>
         ))}
       </div>
       {locked && <p className="mt-2 text-xs text-muted-foreground">O tipo de conta não pode ser alterado depois de salvo.</p>}
@@ -138,7 +142,7 @@ function Registration() {
               <Field name="sector" label="Setor" d={d} required />
               <div className="sm:col-span-2"><Field name="website" label="Site" d={d} placeholder="https://" /></div>
             </section>
-          ) : (
+          ) : kind === "professor" ? (
             <section className="grid gap-4 sm:grid-cols-2">
               <h2 className="font-bold sm:col-span-2">Dados acadêmicos</h2>
               <Field name="institution" label="Instituição" d={d} required />
@@ -146,7 +150,7 @@ function Registration() {
               <Field name="qualification" label="Titulação" d={d} required placeholder="ex.: Mestre" />
               <Field name="subjects" label="Disciplinas" d={d} required />
             </section>
-          )}
+          ) : null}
           <Button type="submit" disabled={busy}>{busy ? "Salvando…" : "Salvar cadastro"}</Button>
         </form>
       )}
