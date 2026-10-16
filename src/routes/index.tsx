@@ -7,6 +7,7 @@ import { StatsCards } from "@/components/common/StatsCards";
 import { EventCardCompact } from "@/components/events/EventCard";
 import { FilterChips } from "@/components/jobs/FilterChips";
 import { JobList } from "@/components/jobs/JobCard";
+import heroPhoto from "@/assets/hero-photo.jpg.asset.json";
 import { SearchBar } from "@/components/jobs/SearchBar";
 import { Reveal } from "@/components/reveal";
 import { emptyFilters, filterJobs, toggleIn } from "@/lib/jobs";
