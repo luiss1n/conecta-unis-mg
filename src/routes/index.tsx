@@ -57,16 +57,23 @@ function Home() {
 
   return (
     <>
-      <section className="border-b bg-surface">
-        <div className="container-page py-12 sm:py-16">
-          <div className="max-w-3xl">
-            <p className="hero-in text-sm font-semibold uppercase tracking-wider text-brand-purple" style={heroDelay(0)}>
+      <section className="relative overflow-hidden border-b border-hero-border bg-hero text-hero-foreground">
+        <img
+          src={heroPhoto.url}
+          alt=""
+          aria-hidden="true"
+          className="hero-in pointer-events-none absolute inset-y-0 right-0 h-full w-full object-cover object-top opacity-50 sm:w-[58%] sm:opacity-100 sm:[mask-image:linear-gradient(to_right,transparent,black_50%)]"
+          style={heroDelay(200)}
+        />
+        <div className="container-page relative py-12 sm:py-16">
+          <div className="max-w-2xl">
+            <p className="hero-in text-sm font-semibold uppercase tracking-wider text-hero-accent" style={heroDelay(0)}>
               Núcleo de Carreira e Empregabilidade
             </p>
-            <h1 className="hero-in mt-3 text-4xl font-extrabold leading-tight sm:text-5xl" style={heroDelay(120)}>
+            <h1 className="hero-in mt-3 text-4xl font-extrabold leading-tight text-hero-foreground sm:text-5xl" style={heroDelay(120)}>
               Encontre sua oportunidade <span className="text-brand-gradient">na região</span>
             </h1>
-            <p className="hero-in mt-4 text-lg text-muted-foreground" style={heroDelay(240)}>
+            <p className="hero-in mt-4 text-lg text-hero-muted" style={heroDelay(240)}>
               Conectando estudantes da Unis a vagas de estágio e emprego em São Lourenço, Caxambu e região.
             </p>
             <div className="hero-in mt-8 space-y-4" style={heroDelay(360)}>
