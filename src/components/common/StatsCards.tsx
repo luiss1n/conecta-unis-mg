@@ -1,6 +1,7 @@
 import { Briefcase, Building2, Gift, GraduationCap } from "lucide-react";
 import { demoStats } from "@/data/demo";
 import { DemoBadge } from "./DemoBadge";
+import { CountUp } from "@/components/reveal";
 
 const icons = [GraduationCap, Briefcase, Building2, Gift] as const;
 
@@ -17,7 +18,9 @@ export function StatsCards() {
           return (
             <li key={s.label} className="rounded-xl bg-muted/60 p-4">
               <Icon className="h-5 w-5 text-brand-purple" />
-              <p className="mt-3 font-display text-2xl font-extrabold sm:text-3xl">{s.value}</p>
+              <p className="mt-3 font-display text-2xl font-extrabold sm:text-3xl">
+                <CountUp to={Number(String(s.value).replace(/\D/g, ""))} />
+              </p>
               <p className="text-sm text-muted-foreground">{s.label}</p>
             </li>
           );

@@ -1,9 +1,9 @@
 @import "tailwindcss" source(none);
 @source "../src";
 @import "tw-animate-css";
- 
+
 @custom-variant dark (&:is(.dark *));
- 
+
 @theme inline {
   --font-sans: "Manrope", ui-sans-serif, system-ui, sans-serif;
   --font-display: "Plus Jakarta Sans", ui-sans-serif, system-ui, sans-serif;
@@ -63,7 +63,7 @@
   --shadow-card: var(--shadow-card-value);
   --shadow-card-hover: var(--shadow-card-hover-value);
 }
- 
+
 :root {
   --radius: 0.75rem;
   --background: oklch(0.985 0.004 264);
@@ -115,18 +115,18 @@
   --shadow-card-value: 0 1px 2px oklch(0.22 0.035 268 / 0.04), 0 2px 8px oklch(0.22 0.035 268 / 0.04);
   --shadow-card-hover-value: 0 4px 10px oklch(0.22 0.035 268 / 0.06), 0 12px 28px -8px oklch(0.52 0.2 262 / 0.18);
 }
- 
+
 @utility bg-brand-gradient {
   background-image: var(--gradient-brand);
 }
- 
+
 @utility text-brand-gradient {
   background-image: var(--gradient-brand);
   -webkit-background-clip: text;
   background-clip: text;
   color: transparent;
 }
- 
+
 @utility container-page {
   width: 100%;
   max-width: 80rem;
@@ -139,7 +139,7 @@
     padding-inline: 2rem;
   }
 }
- 
+
 @layer base {
   * {
     border-color: var(--color-border);
@@ -157,21 +157,21 @@
     letter-spacing: -0.015em;
   }
 }
- 
+
 /* ==========================================================================
    ANIMAÇÕES
    ========================================================================== */
- 
+
 :root {
   --ease-out-expo: cubic-bezier(0.22, 1, 0.36, 1);
   --ease-spring: cubic-bezier(0.34, 1.56, 0.64, 1);
 }
- 
+
 /* Rolagem suave ao clicar em âncoras */
 html {
   scroll-behavior: smooth;
 }
- 
+
 /* ---------- Aparecer ao rolar (usado pelo <Reveal>) ---------- */
 .reveal {
   opacity: 0;
@@ -187,13 +187,13 @@ html {
 .reveal[data-reveal="right"] { transform: translate3d(40px, 0, 0); }
 .reveal[data-reveal="scale"] { transform: scale(0.92); }
 .reveal[data-reveal="fade"]  { transform: none; }
- 
+
 .reveal[data-visible="true"] {
   opacity: 1;
   transform: none;
   will-change: auto;
 }
- 
+
 /* ---------- Entrada do herói (carrega sozinho, sem precisar rolar) ---------- */
 @keyframes hero-in {
   from { opacity: 0; transform: translate3d(0, 24px, 0); }
@@ -204,7 +204,7 @@ html {
   animation: hero-in 800ms var(--ease-out-expo) forwards;
   animation-delay: var(--hero-delay, 0ms);
 }
- 
+
 /* ---------- Cards: sobem levemente no hover (usa a sombra do seu tema) ---------- */
 .card-lift {
   transition:
@@ -219,14 +219,14 @@ html {
 .card-lift:active {
   transform: translateY(-1px) scale(0.99);
 }
- 
+
 /* ---------- Botões: micro-interação ao clicar ---------- */
 .btn-press {
   transition: transform 200ms var(--ease-spring), filter 200ms ease;
 }
 .btn-press:hover  { filter: brightness(1.05); }
 .btn-press:active { transform: scale(0.96); }
- 
+
 /* ---------- Barra de progresso de rolagem ---------- */
 .scroll-progress {
   position: fixed;
@@ -242,7 +242,7 @@ html {
   transform: scaleX(0);
   background-image: var(--gradient-brand);
 }
- 
+
 /* ---------- Acessibilidade: respeita "reduzir movimento" ---------- */
 @media (prefers-reduced-motion: reduce) {
   html { scroll-behavior: auto; }
